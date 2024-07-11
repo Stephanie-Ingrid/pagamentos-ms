@@ -1,6 +1,7 @@
 package com.foodapp.pagamentos.service;
 
 import com.foodapp.pagamentos.dto.PagamentoDTO;
+import com.foodapp.pagamentos.http.PedidoClient;
 import com.foodapp.pagamentos.model.Pagamento;
 import com.foodapp.pagamentos.model.Status;
 import com.foodapp.pagamentos.repository.PagamentoRepository;
@@ -11,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor
 public class PagamentoServiceImpl implements PagamentoService {
@@ -18,6 +21,8 @@ public class PagamentoServiceImpl implements PagamentoService {
     private PagamentoRepository repository;
 
     private ModelMapper modelMapper;
+
+    private PedidoClient pedido;
 
     public Page<PagamentoDTO> obterTodos(Pageable paginacao) {
         return repository
@@ -51,6 +56,31 @@ public class PagamentoServiceImpl implements PagamentoService {
         repository.deleteById(id);
     }
 
+    public void confirmarPagamento(Long id){
+        Optional<Pagamento> pagamento = repository.findById(id);
+
+        if (!pagamento.isPresent()) {
+            throw new EntityNotFoundException();
+        }
+
+        pagamento.get().setStatus(Status.CONFIRMADO);
+        repository.save(pagamento.get());
+        pedido.atualizaPagamento(pagamento.get().getPedidoId());
+    }
+
+    @Override
+    public void alteraStatus(Long id) {
+
+        Optional<Pagamento> pagamento = repository.findById(id);
+
+        if (!pagamento.isPresent()) {
+            throw new EntityNotFoundException();
+        }
+
+        pagamento.get().setStatus(Status.CONFIRMADO_SEM_INTEGRACAO);
+        repository.save(pagamento.get());
+
+    }
 
 
 }

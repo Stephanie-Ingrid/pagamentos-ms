@@ -2,6 +2,7 @@ package com.foodapp.pagamentos.controller;
 
 import com.foodapp.pagamentos.dto.PagamentoDTO;
 import com.foodapp.pagamentos.service.PagamentoService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -21,6 +22,16 @@ import java.net.URI;
 public class PagamentoController {
 
     private PagamentoService service;
+
+    @PatchMapping("/{id}/confirmar")
+    @CircuitBreaker(name = "atualizaPedido", fallbackMethod = "pagamentoAutorizadoIntegracaoPendente")
+    public void confirmarPagamento(@PathVariable @NotNull Long id){
+        service.confirmarPagamento(id);
+    }
+
+    public void pagamentoAutorizadoIntegracaoPendente(Long id, Exception e){
+        service.alteraStatus(id);
+    }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)

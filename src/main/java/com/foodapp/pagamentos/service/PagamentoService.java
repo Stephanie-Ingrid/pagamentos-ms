@@ -1,7 +1,6 @@
 package com.foodapp.pagamentos.service;
 
 import com.foodapp.pagamentos.dto.PagamentoDTO;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -17,4 +16,7 @@ public interface PagamentoService {
 
     void excluirPagamento (Long id);
 
+    void  confirmarPagamento(Long id);
+
+    void alteraStatus(Long id);
 }
