@@ -6,6 +6,8 @@ import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -22,6 +24,8 @@ import java.net.URI;
 public class PagamentoController {
 
     private PagamentoService service;
+
+    private RabbitTemplate rabbitTemplate;
 
     @PatchMapping("/{id}/confirmar")
     @CircuitBreaker(name = "atualizaPedido", fallbackMethod = "pagamentoAutorizadoIntegracaoPendente")
@@ -53,6 +57,9 @@ public class PagamentoController {
 
         PagamentoDTO pagamento = service.criarPagamento(dto);
         URI endereco = uriBuilder.path("/pagamentos/{id}").buildAndExpand(pagamento.getId()).toUri();
+
+        Message message = new Message(("pagamento criado com o id " + pagamento.getId()).getBytes());
+        rabbitTemplate.send("pagamento.concluido", message);
 
         return ResponseEntity.created(endereco).body(pagamento);
     }
