@@ -13,8 +13,4 @@ public class ConfigInfra {
         return new ModelMapper();
     }
 
-    @Bean
-    public Jackson2JsonMessageConverter messageConverter(){
-        return new Jackson2JsonMessageConverter();
-    }
 }
