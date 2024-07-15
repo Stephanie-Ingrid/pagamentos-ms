@@ -11,7 +11,10 @@ para caso de inatividade na API, openfeign para comunicação com microserviço 
 - Lombok
 - Docker
 
+
 ## Para rodar o projeto 
+Na raiz do projeto o arquivo docker-compose.yml é a imagem do RabbitMQ.
+
 Antes de tudo suba o banco, o arquivo está na pasta database com nome `docker-compose.yaml`, 
 suba a imagem com o comando a seguir:
 
