@@ -2,7 +2,7 @@
 
 Simula microsserviço de transação de cartões, tem integração com
 Eureka Sever do Spring Cloud Netflix, Circuit Breaker 
-para caso de inatividade na API, openfeign para comunicação com microserviço Pedidos.
+para caso de inatividade na API, openfeign para comunicação com microsserviço <a href="https://github.com/Stephanie-Ingrid/pedidos-ms">Pedidos</a>, fila de mensageria com RabbitMQ.
 
 ### Ferramentas para Executar
 
