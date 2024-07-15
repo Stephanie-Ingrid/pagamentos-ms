@@ -1,6 +1,6 @@
 #  API Pagamentos MS
 
-Simula microserviço de transação de cartões, tem integração com
+Simula microsserviço de transação de cartões, tem integração com
 Eureka Sever do Spring Cloud Netflix, Circuit Breaker 
 para caso de inatividade na API, openfeign para comunicação com microserviço Pedidos.
 
